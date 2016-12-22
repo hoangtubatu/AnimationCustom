@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -10,9 +10,17 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.hoang.animationcustom.MainActivity">
 
+    <FrameLayout
+        android:id="@+id/showimage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    </FrameLayout>
+
     <ListView
         android:id="@+id/list"
         android:layout_height="match_parent"
-        android:background="@drawable/border_listview"
-        android:layout_width="match_parent"/>
-</RelativeLayout>
+        android:layout_width="match_parent"
+        android:background="@drawable/border_listview"/>
+</FrameLayout>
