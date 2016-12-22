@@ -11,6 +11,7 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -18,9 +19,7 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +31,8 @@ public class MainActivity extends AppCompatActivity implements  View.OnTouchList
     //init values items in listview
     static final String[] _values = new String[20];
     private static final String TAG = "HOANG";
+    private static final float OFFSET = 20f;
+    private static final boolean INVERT = false;
 
     {
         for(int i=0;i<_values.length;i++){
@@ -83,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements  View.OnTouchList
             _showimage.addView(im);
 
             _listPerson.get(i).setImageView(im);
+
         }
     }
 
@@ -108,6 +110,12 @@ public class MainActivity extends AppCompatActivity implements  View.OnTouchList
                 _preMoveListPosY= (int)motionEvent.getRawY();
 
                 _yDelta = _actionDownListPosY - (int)_listView.getTranslationY();
+
+                for(int i=0;i<_listPerson.size();i++) {
+                    _listPerson.get(i).setStartPosY(_listPerson.get(i).getImageView().getY() + OFFSET);
+                    _listPerson.get(i).setMidPosY(_listPerson.get(i).getImageView().getY() + _listPerson.get(i).getRadius() + OFFSET);
+                    _listPerson.get(i).setEndPosY(_listPerson.get(i).getImageView().getY() + 2 * _listPerson.get(i).getRadius() + OFFSET);
+                }
                 break;
             case MotionEvent.ACTION_UP:
                 if(_listView.getY() <= _listView.getHeight()/2){
@@ -132,6 +140,30 @@ public class MainActivity extends AppCompatActivity implements  View.OnTouchList
 
                 _preMoveListPosY=_curMoveListPosY;
                 _listView.setTranslationY(_curMoveListPosY - _yDelta);
+
+                //caculate position of listview to scale image
+                for (Person $p : _listPerson){
+                    float $lvPosY = _listView.getY();
+
+                    if($lvPosY <= $p.getStartPosY()){
+                        if(!INVERT){
+                            $p.getImageView().setScaleX(0);
+                            $p.getImageView().setScaleY(0);
+                        }
+                    }else {
+                        if($p.getStartPosY() <= $lvPosY && $lvPosY <= $p.getMidPosY()){
+                            float $scale = INVERT?($p.getMidPosY()-$lvPosY)/$p.getRadius():0f;
+                            $p.getImageView().setScaleX($scale);
+                            $p.getImageView().setScaleY($scale);
+                        }else{
+                            if($p.getMidPosY() < $lvPosY && $lvPosY <= $p.getEndPosY()){
+                                float $scale = ($lvPosY-$p.getMidPosY())/$p.getRadius();
+                                $p.getImageView().setScaleX($scale);
+                                $p.getImageView().setScaleY($scale);
+                            }
+                        }
+                    }
+                }
                 break;
         }
         return true;
@@ -158,17 +190,19 @@ public class MainActivity extends AppCompatActivity implements  View.OnTouchList
         bitmapFatoryOptions.inPreferredConfig=Bitmap.Config.RGB_565;//must use RGB_565 for Face Detect
 
         Person p1 = new Person();
+        p1.setTag("Huyen My");
         p1.setOrginalImage(BitmapFactory.decodeResource(getResources(), R.drawable.image1, bitmapFatoryOptions));
         p1.setCropImageFromOrginal(scaleBitmapFitShowArea(p1.getOrginalImage(),width));
         p1.setMidFacePoint(new Point((int)(width/2),(int)(width/2.6)));
-        p1.setRadius((int)(width/2));
+        p1.setRadius((int)(width/4));
         p1.setCircularImageFromCrop(detectAndCutFace(p1));
 
         Person p2 = new Person();
+        p2.setTag("Khoi My");
         p2.setOrginalImage(BitmapFactory.decodeResource(getResources(), R.drawable.image2, bitmapFatoryOptions));
         p2.setCropImageFromOrginal(scaleBitmapFitShowArea(p2.getOrginalImage(),width));
         p2.setMidFacePoint(new Point((int)width/2,(int)(width/2.1)));
-        p2.setRadius((int)(width/1.5));
+        p2.setRadius((int)(width/3));
         p2.setCircularImageFromCrop(detectAndCutFace(p2));
 
         _listPerson.add(p1);
@@ -235,9 +269,9 @@ public class MainActivity extends AppCompatActivity implements  View.OnTouchList
             safeDetector.release();
 */
 
-        int x = p.getMidFacePoint().x - p.getRadius()/2;
-        int y = p.getMidFacePoint().y - p.getRadius()/2;
-        Bitmap newRecCutBitmap=Bitmap.createBitmap(p.getCropImageFromOrginal(),x,y,p.getRadius(),p.getRadius());
+        int x = p.getMidFacePoint().x - p.getRadius();
+        int y = p.getMidFacePoint().y - p.getRadius();
+        Bitmap newRecCutBitmap=Bitmap.createBitmap(p.getCropImageFromOrginal(),x,y,2*p.getRadius(),2*p.getRadius());
         return getCircularFromRect(newRecCutBitmap);
     }
 

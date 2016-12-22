@@ -9,12 +9,48 @@ import android.widget.ImageView;
  */
 
 public class Person {
+    String tag;
     Bitmap orginalImage;
     Bitmap cropImageFromOrginal;
     Bitmap circularImageFromCrop;
     Point midFacePoint;
     int radius;
     ImageView imageView;
+    float startPosY;
+    float midPosY;
+    float endPosY;
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    public float getStartPosY() {
+        return startPosY;
+    }
+
+    public void setStartPosY(float startPosY) {
+        this.startPosY = startPosY;
+    }
+
+    public float getMidPosY() {
+        return midPosY;
+    }
+
+    public void setMidPosY(float midPosY) {
+        this.midPosY = midPosY;
+    }
+
+    public float getEndPosY() {
+        return endPosY;
+    }
+
+    public void setEndPosY(float endPosY) {
+        this.endPosY = endPosY;
+    }
 
     public ImageView getImageView() {
         return imageView;
