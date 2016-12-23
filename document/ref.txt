@@ -1,0 +1,34 @@
+builder pattern
+    http://www.oodesign.com/singleton-pattern.html
+    http://stackoverflow.com/questions/328496/when-would-you-use-the-builder-pattern
+
+ViewPropertyAnimator
+    http://www.vogella.com/tutorials/AndroidAnimation/article.html#viewpropertyanimator
+
+touch event
+    http://stackoverflow.com/questions/23120807/android-move-view-on-touch-event
+
+detect face (not work on my device)
+    https://developers.google.com/vision/android/detect-faces-tutorial
+    https://software.intel.com/en-us/blogs/2013/10/28/implementing-face-detection-in-android
+    https://github.com/Jorgesys/Android_Face_Detection/blob/master/src/com/jorgesys/facedetection/FaceDetection.java
+    https://github.com/googlesamples/android-vision
+
+alternate detect face (don't know how to use)
+    https://github.com/bytedeco/javacv
+    https://github.com/bytedeco/javacv/blob/master/samples/OpenCVFaceRecognizer.java
+
+cut image inside image
+    http://stackoverflow.com/questions/23130183/how-to-crop-the-image-using-four-x-y-coordinates
+
+Cropping circular area from bitmap
+    http://stackoverflow.com/questions/11932805/cropping-circular-area-from-bitmap-in-android
+
+get image path
+    http://stackoverflow.com/questions/8601070/android-get-image-path-from-drawable-as-string
+
+custom transition between activity, transition framework api only use in android 5.0 above
+    https://medium.com/@aitorvs/android-shared-element-transitions-for-all-b90e9361507d#.o5jxdykni
+
+draw circle transparent
+    http://stackoverflow.com/questions/19947835/android-canvas-draw-transparent-circle-on-image
