@@ -1,14 +1,18 @@
-package com.hoang.animationcustom;
+package com.hoang.animationcustom.model;
 
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.widget.ImageView;
 
+import java.io.Serializable;
+
 /**
  * Created by Hoang-PC on 12/22/2016.
  */
 
-public class Person {
+public class Person implements Serializable {
+    private static final long serialVersionUID = -6298516694275121291L;
+
     String tag;
     Bitmap orginalImage;
     Bitmap cropImageFromOrginal;
@@ -19,6 +23,31 @@ public class Person {
     float startPosY;
     float midPosY;
     float endPosY;
+    float xCircular;
+    float yCircular;
+
+    public Person(String tag, Bitmap orginalImage, Point midFacePoint, int radius) {
+        this.tag = tag;
+        this.orginalImage = orginalImage;
+        this.midFacePoint = midFacePoint;
+        this.radius = radius;
+    }
+
+    public float getxCircular() {
+        return xCircular;
+    }
+
+    public void setxCircular(float xCircular) {
+        this.xCircular = xCircular;
+    }
+
+    public float getyCircular() {
+        return yCircular;
+    }
+
+    public void setyCircular(float yCircular) {
+        this.yCircular = yCircular;
+    }
 
     public String getTag() {
         return tag;
@@ -98,5 +127,10 @@ public class Person {
 
     public void setCircularImageFromCrop(Bitmap circularImageFromCrop) {
         this.circularImageFromCrop = circularImageFromCrop;
+    }
+
+    @Override
+    public String toString() {
+        return getTag();
     }
 }
