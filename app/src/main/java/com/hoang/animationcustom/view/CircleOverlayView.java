@@ -21,67 +21,56 @@ import com.hoang.animationcustom.R;
  */
 
 public class CircleOverlayView extends FrameLayout {
-    private Bitmap bitmap;
-    Point point = new Point(0,0);
-    float radius = 1f;
+    private int RADIUS = 200;
+
+    private Paint mBackgroundPaint;
+    private float mCx = -1;
+    private float mCy = -1;
+
+    private int mTutorialColor = Color.parseColor("#D20E0F02");
 
     public CircleOverlayView(Context context) {
         super(context);
+        init();
     }
 
     public CircleOverlayView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init();
     }
 
     public CircleOverlayView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public CircleOverlayView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        init();
+    }
+
+    private void init() {
+        setWillNotDraw(false);
+        setLayerType(LAYER_TYPE_HARDWARE, null);
+
+        mBackgroundPaint = new Paint();
+        mBackgroundPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+    }
+
+    public void setCircle(Point p, int radius){
+        mCx = p.x;
+        mCy = p.y;
+        RADIUS = radius;
+        invalidate();
     }
 
     @Override
-    protected void dispatchDraw(Canvas canvas) {
-        super.dispatchDraw(canvas);
-
-        if (bitmap == null) {
-            createWindowFrame();
+    protected void onDraw(Canvas canvas) {
+        canvas.drawColor(mTutorialColor);
+        if (mCx >= 0 && mCy >= 0) {
+            canvas.drawCircle(mCx, mCy, RADIUS, mBackgroundPaint);
         }
-        canvas.drawBitmap(bitmap, 0, 0, null);
-    }
-
-    protected void createWindowFrame() {
-        bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas osCanvas = new Canvas(bitmap);
-
-        RectF outerRectangle = new RectF(0, 0, getWidth(), getHeight());
-
-        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setColor(getResources().getColor(R.color.colorPrimary));
-        paint.setAlpha(99);
-        osCanvas.drawRect(outerRectangle, paint);
-
-        paint.setColor(Color.TRANSPARENT);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OUT));
-
-        osCanvas.drawCircle(point.x, point.y, radius, paint);
-    }
-    public void setCircle(Point point, float radius){
-        this.point = point;
-        this.radius = radius;
-    }
-
-    @Override
-    public boolean isInEditMode() {
-        return true;
-    }
-
-    @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        super.onLayout(changed, l, t, r, b);
-        bitmap = null;
     }
 }
 

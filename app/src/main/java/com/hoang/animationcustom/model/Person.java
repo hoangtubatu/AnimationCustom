@@ -17,12 +17,15 @@ public class Person implements Serializable {
     Bitmap orginalImage;
     Bitmap cropImageFromOrginal;
     Bitmap circularImageFromCrop;
+    ImageView imageView;
+
     Point midFacePoint;
     int radius;
-    ImageView imageView;
+
     float startPosY;
     float midPosY;
     float endPosY;
+
     float xCircular;
     float yCircular;
 

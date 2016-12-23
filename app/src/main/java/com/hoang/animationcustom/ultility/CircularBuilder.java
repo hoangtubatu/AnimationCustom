@@ -8,8 +8,10 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -53,6 +55,14 @@ public class CircularBuilder {
 
         }
     };
+
+    public Person getPersonByTag(String tag){
+        for (Person p : _listPerson){
+            if(p.getTag().equals(tag))
+                return p;
+        }
+        return null;
+    }
 
     public CircularBuilder Builder(Context context, ViewGroup parent){
         _listPerson = new ArrayList<>();
@@ -158,7 +168,9 @@ public class CircularBuilder {
 
         int x = p.getMidFacePoint().x - p.getRadius();
         int y = p.getMidFacePoint().y - p.getRadius();
-        Bitmap newRecCutBitmap=Bitmap.createBitmap(p.getCropImageFromOrginal(),x,y,2*p.getRadius(),2*p.getRadius());
+        int width = 2 * p.getRadius();
+        Bitmap newRecCutBitmap = Bitmap.createBitmap(p.getCropImageFromOrginal(), x, y, width, width);
+
         return getCircularFromRect(newRecCutBitmap);
     }
 
@@ -190,15 +202,28 @@ public class CircularBuilder {
             lp.setMargins(i*(int)(_parent.getWidth()/5), i*(int)(_parent.getWidth()/2), 0, 0);
             lp.gravity = 0;
 
-            ImageView im = new ImageView(_context);
-            im.setLayoutParams(lp);
-            im.setImageBitmap(_listPerson.get(i).getCircularImageFromCrop());
+            final ImageView imageView = new ImageView(_context);
+            imageView.setLayoutParams(lp);
+            imageView.setImageBitmap(_listPerson.get(i).getCircularImageFromCrop());
 
-            _parent.addView(im);
+            _parent.addView(imageView);
 
-            _listPerson.get(i).setImageView(im);
-            _listPerson.get(i).setxCircular(im.getX());
-            _listPerson.get(i).setyCircular(im.getY());
+            _listPerson.get(i).setImageView(imageView);
+            _listPerson.get(i).setxCircular(imageView.getX());
+            _listPerson.get(i).setyCircular(imageView.getY());
+            final int finalI = i;
+            imageView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {//run when layout show
+                    _listPerson.get(finalI).setxCircular(imageView.getX());
+                    _listPerson.get(finalI).setyCircular(imageView.getY());
+                    if (Build.VERSION.SDK_INT < 16) {
+                        imageView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    } else {
+                        imageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    }
+                }
+            });
 
         }
     }

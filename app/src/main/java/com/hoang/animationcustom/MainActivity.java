@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements  View.OnTouchList
                     @Override
                     public void onClick(View v, Person p) {
                         Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                        intent.putExtra("tag",p.getTag());
 
                         startActivity(intent);
                         overridePendingTransition(0, 0);
@@ -130,14 +131,14 @@ public class MainActivity extends AppCompatActivity implements  View.OnTouchList
 
             case MotionEvent.ACTION_UP:
                 if(_listView.getY() <= _listView.getHeight()/2){
-                    _listView.animate().setDuration(500).translationY(_limitTopLv).setInterpolator(new OvershootInterpolator());
+                    _listView.animate().setDuration(500).translationY(_limitTopLv).setInterpolator(new OvershootInterpolator()).start();
                     for (Person p : _listPerson){
-                        p.getImageView().animate().scaleX(0f).scaleY(0f).setDuration(500).setInterpolator(new OvershootInterpolator());
+                        p.getImageView().animate().scaleX(0f).scaleY(0f).setDuration(500).setInterpolator(new OvershootInterpolator()).start();
                     }
                 }else{
-                    _listView.animate().setDuration(500).translationY(_limitBotLv).setInterpolator(new OvershootInterpolator());
+                    _listView.animate().setDuration(500).translationY(_limitBotLv).setInterpolator(new OvershootInterpolator()).start();
                     for (Person p : _listPerson){
-                        p.getImageView().animate().scaleX(1f).scaleY(1f).setDuration(500).setInterpolator(new OvershootInterpolator());
+                        p.getImageView().animate().scaleX(1f).scaleY(1f).setDuration(500).setInterpolator(new OvershootInterpolator()).start();
                     }
                 }
 
