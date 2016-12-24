@@ -4,7 +4,7 @@ Note that the shared element transitions require Android 5.0 (API level 21) and 
 
 Not need to use CircularReveal ( https://github.com/ozodrukh/CircularReveal )
 
-Google Vision FaceDetector not work on my device (API 19 - Android 4.4 Kitkat), then i skip it.
+Google Vision FaceDetector not work on my device (API 19 - Android 4.4 Kitkat), so i skip it.
 
 REQUIRE:
 ![alt tag](https://github.com/hoangtubatu/AnimationCustom/blob/master/document/animation_src.gif)
